@@ -19,6 +19,16 @@ const taskSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    creator: {
+      _id: {
+        type: String,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+    },
     assign: {
       _id: {
         type: String,

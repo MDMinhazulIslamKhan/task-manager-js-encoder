@@ -44,6 +44,10 @@ const createTask = async (req, res) => {
     description,
     dueDate: new Date(dueDate),
     status: status ? status : false,
+    creator: {
+      _id: decoded?.id,
+      name: decoded?.name,
+    },
     assign: {
       _id: assignUsersId ? assignUsersId : decoded?.id,
       name: assignUser ? assignUser?.name : decoded?.name,
