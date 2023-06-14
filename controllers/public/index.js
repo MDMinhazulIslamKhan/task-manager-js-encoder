@@ -66,7 +66,10 @@ const createTask = async (req, res, next) => {
       newTask,
     });
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
@@ -133,7 +136,10 @@ const updateTask = async (req, res, next) => {
       updatedTask,
     });
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
@@ -176,7 +182,10 @@ const deleteTask = async (req, res, next) => {
       message: message,
     });
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
@@ -205,7 +214,10 @@ const filterTask = async (req, res, next) => {
 
     res.json(tasks);
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
@@ -232,7 +244,10 @@ const sortTask = async (req, res, next) => {
 
     res.json(tasks);
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
@@ -252,7 +267,10 @@ const userNotification = async (req, res, next) => {
       message: notification,
     });
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
@@ -311,7 +329,10 @@ const updateTaskStatus = async (req, res, next) => {
       updatedTask,
     });
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 

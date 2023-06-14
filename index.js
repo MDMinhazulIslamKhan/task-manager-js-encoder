@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 
-import globalErrorHandler from "./middleware/common/globalErrorHandler.js";
 import { CommonRouters } from "./routes/v1/common/index.js";
 import { PublicRouters } from "./routes/v1/public/index.js";
 import { isUser } from "./middleware/public/index.js";
@@ -29,8 +28,5 @@ app.all("*", (req, res) => {
   const route = req.params;
   return res.status(404).send(`No Route found in "${route[0]}" !`);
 });
-
-// Error handler
-app.use(globalErrorHandler);
 
 export default app;

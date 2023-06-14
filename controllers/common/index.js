@@ -1,8 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../models/userModel.js";
-import createToken from "../../utils/createToken.js";
-import ApiError from "../../errors/ApiErrors.js";
 
 const registration = async (req, res, next) => {
   try {
@@ -32,17 +30,16 @@ const registration = async (req, res, next) => {
     });
     const createUser = await user.save();
 
-    if (!createUser) {
-      throw new ApiError(400, "Failed to registration!");
-    }
-
     return res.status(201).json({
       success: true,
-      message:
-        "User created successfully. Please check your email and verify your account.",
+      message: "User created successfully.",
+      User: user,
     });
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
@@ -91,7 +88,10 @@ const login = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    return next(error);
+    return res.status(409).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
