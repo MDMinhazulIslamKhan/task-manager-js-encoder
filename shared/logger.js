@@ -15,11 +15,7 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
 
 const logger = createLogger({
   level: "info",
-  format: combine(
-    label({ label: "University project" }),
-    timestamp(),
-    myFormat
-  ),
+  format: combine(label({ label: "Task project" }), timestamp(), myFormat),
   transports: [
     new transports.Console(),
     new DailyRotateFile({
@@ -40,11 +36,7 @@ const logger = createLogger({
 
 const errorLogger = createLogger({
   level: "error",
-  format: combine(
-    label({ label: "University project" }),
-    timestamp(),
-    myFormat
-  ),
+  format: combine(label({ label: "Task project" }), timestamp(), myFormat),
   transports: [
     new transports.Console(),
     new DailyRotateFile({

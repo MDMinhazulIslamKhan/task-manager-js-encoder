@@ -4,7 +4,7 @@ import Task from "../../models/taskModel.js";
 import mongoose from "mongoose";
 import User from "../../models/userModel.js";
 
-const createTask = async (req, res) => {
+const createTask = async (req, res, next) => {
   const { title, description, dueDate, status, assignUsersId } = req.body;
   const token = req?.headers?.authorization;
   const decoded = jwt.verify(token, config.secret_key);
@@ -70,4 +70,109 @@ const createTask = async (req, res) => {
   }
 };
 
-export const PublicController = { createTask };
+const updateTask = async (req, res, next) => {
+  const { taskId } = req.query;
+  const { title, description, dueDate, status, assignUsersId } = req.body;
+  const token = req?.headers?.authorization;
+  const decoded = jwt.verify(token, config.secret_key);
+  let assignUser;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+      return res.status(404).send({
+        success: false,
+        message: `No task with this taskId (${taskId})`,
+      });
+    }
+    if (assignUsersId && !mongoose.Types.ObjectId.isValid(assignUsersId)) {
+      return res.status(404).send({
+        success: false,
+        message: `No user with this assignUsersId (${assignUsersId})`,
+      });
+    } else if (assignUsersId) {
+      assignUser = await User.findOne({ _id: assignUsersId });
+      if (!assignUser) {
+        return res.status(404).send({
+          success: false,
+          message: `No user with this assignUsersId (${assignUsersId})`,
+        });
+      }
+    }
+    const task = await Task.findOne({ _id: taskId });
+
+    if (task?.creator._id !== decoded.id) {
+      return res.status(404).send({
+        success: false,
+        message: `You have no access to edit this task.`,
+      });
+    }
+    const updatedTask = await Task.findByIdAndUpdate(
+      taskId,
+      {
+        title,
+        description,
+        dueDate,
+        status,
+        assign: {
+          _id: assignUsersId,
+          name: assignUser.name,
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedTask) {
+      return res.status(404).send({
+        success: false,
+        message: `No task with this taskId (${taskId})`,
+      });
+    }
+
+    return res.status(201).json({
+      message: "Task updated Successfully",
+      updatedTask,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const deleteTask = async (req, res, next) => {
+  const { taskId } = req.query;
+  const token = req?.headers?.authorization;
+  const decoded = jwt.verify(token, config.secret_key);
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+      return res.status(404).send({
+        success: false,
+        message: `No task with this taskId (${taskId})`,
+      });
+    }
+
+    const task = await Task.findOne({ _id: taskId });
+
+    if (!task) {
+      return res.status(404).send({
+        success: false,
+        message: `No task with this taskId (${taskId})`,
+      });
+    }
+    console.log(decoded);
+    if (task?.creator._id !== decoded.id) {
+      return res.status(404).send({
+        success: false,
+        message: `You have no access to delete this task.`,
+      });
+    }
+
+    const data = await Task.findByIdAndRemove(taskId);
+    const message = data
+      ? "Task deleted Successfully"
+      : `No task exist with this taskId`;
+    res.json({ message: message });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const PublicController = { createTask, updateTask, deleteTask };

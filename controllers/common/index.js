@@ -46,7 +46,7 @@ const registration = async (req, res, next) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -91,7 +91,7 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    return res.status(409).json({ message: error });
+    return next(error);
   }
 };
 

@@ -29,6 +29,11 @@
             "date": 1686730094343,
             "name": "C:\\my-project\\task-manager-js-encoder\\logs\\winston\\errors\\uni-14 Jun, 2023 14-error.log",
             "hash": "450135cbd66f1547c9c8facac8b8e8e2320e4e2e80e847a2646f74d3fc1a8737"
+        },
+        {
+            "date": 1686733201110,
+            "name": "C:\\my-project\\task-manager-js-encoder\\logs\\winston\\errors\\uni-14 Jun, 2023 15-error.log",
+            "hash": "20db0d4f0a62589fd422821579b907646488109bf1496863bcb05e249a615866"
         }
     ],
     "hashType": "sha256"
