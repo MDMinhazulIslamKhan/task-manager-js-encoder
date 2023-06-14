@@ -128,6 +128,7 @@ const updateTask = async (req, res, next) => {
     }
 
     return res.status(201).json({
+      success: true,
       message: "Task updated Successfully",
       updatedTask,
     });
@@ -169,10 +170,157 @@ const deleteTask = async (req, res, next) => {
     const message = data
       ? "Task deleted Successfully"
       : `No task exist with this taskId`;
-    res.json({ message: message });
+
+    return res.status(201).json({
+      success: true,
+      message: message,
+    });
   } catch (error) {
     return next(error);
   }
 };
 
-export const PublicController = { createTask, updateTask, deleteTask };
+const filterTask = async (req, res, next) => {
+  const token = req?.headers?.authorization;
+  const decoded = jwt.verify(token, config.secret_key);
+  const { dueDate, status, assignUsersId } = req.query;
+  const filter = {};
+
+  try {
+    if (dueDate) {
+      filter.dueDate = { $gte: new Date(dueDate) };
+    }
+
+    if (status) {
+      filter.status = status;
+    }
+
+    if (assignUsersId) {
+      filter["assign.name"] = assignUsersId;
+    }
+
+    const tasks = await Task.find({
+      $and: [{ "assign._id": decoded.id }, filter],
+    });
+
+    res.json(tasks);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const sortTask = async (req, res, next) => {
+  const token = req?.headers?.authorization;
+  const decoded = jwt.verify(token, config.secret_key);
+  const { sortby, order } = req.query;
+  try {
+    const sort = {};
+
+    if (sortby === "dueDate") {
+      sort.dueDate = order === "desc" ? -1 : 1;
+    }
+
+    if (sortby === "status") {
+      sort.status = order === "desc" ? -1 : 1;
+    }
+
+    if (sortby === "assigned") {
+      sort["assign.name"] = order === "desc" ? -1 : 1;
+    }
+
+    const tasks = await Task.find({ "assign._id": decoded.id }).sort(sort);
+
+    res.json(tasks);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const userNotification = async (req, res, next) => {
+  const token = req?.headers?.authorization;
+  const decoded = jwt.verify(token, config.secret_key);
+
+  try {
+    const notification = await Task.find({
+      $and: [
+        { "assign._id": decoded.id },
+        { status: { $in: ["progress", "pending"] } },
+      ],
+    }).select("title dueDate assign.name status");
+    return res.status(404).send({
+      success: true,
+      message: notification,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const updateTaskStatus = async (req, res, next) => {
+  const token = req?.headers?.authorization;
+  const decoded = jwt.verify(token, config.secret_key);
+  const { status, taskId } = req.query;
+  try {
+    if (!status || !taskId) {
+      return res.status(400).json({
+        success: false,
+        message: "You must give status and taskId.",
+      });
+    }
+    if (
+      status !== "progress" &&
+      status !== "completed" &&
+      status !== "pending"
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "You must give task status progress, completed or pending",
+      });
+    }
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+      return res.status(404).send({
+        success: false,
+        message: `No task with this taskId (${taskId})`,
+      });
+    }
+    const task = await Task.findOne({ _id: taskId });
+    if (!task) {
+      return res.status(404).send({
+        success: false,
+        message: `No task with this taskId (${taskId})`,
+      });
+    }
+
+    if (task?.assign?._id !== decoded.id) {
+      return res.status(404).send({
+        success: false,
+        message: `You have no access to edit this task.`,
+      });
+    }
+    const updatedTask = await Task.findByIdAndUpdate(
+      taskId,
+      {
+        status,
+      },
+      { new: true }
+    );
+
+    return res.status(404).send({
+      success: true,
+      message: "Task updated Successfully",
+      updatedTask,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const PublicController = {
+  createTask,
+  updateTask,
+  deleteTask,
+  filterTask,
+  sortTask,
+  userNotification,
+  updateTaskStatus,
+};

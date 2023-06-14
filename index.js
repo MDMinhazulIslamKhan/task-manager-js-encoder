@@ -30,6 +30,7 @@ app.all("*", (req, res) => {
   return res.status(404).send(`No Route found in "${route[0]}" !`);
 });
 
+// Error handler
 app.use(globalErrorHandler);
 
 export default app;

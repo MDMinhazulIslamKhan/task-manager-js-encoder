@@ -1,6 +1,0 @@
-Wed Jun 14 2023 13:5:8 [University project] error: jwt is not defined
-Wed Jun 14 2023 13:5:27 [University project] error: jwt is not defined
-Wed Jun 14 2023 13:6:40 [University project] error: jwt is not defined
-Wed Jun 14 2023 13:10:11 [University project] error: next is not defined
-Wed Jun 14 2023 13:24:25 [University project] error: next is not defined
-Wed Jun 14 2023 13:41:51 [University project] error: Cast to ObjectId failed for value "" (type string) at path "_id" for model "User"
