@@ -2,11 +2,11 @@
   "name": "task_manager_project_js-encoder",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "start-dev": "nodemon server.js"
+    "start": "node index.js",
+    "start-dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
