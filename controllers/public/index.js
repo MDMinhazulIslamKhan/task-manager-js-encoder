@@ -32,10 +32,15 @@ const createTask = async (req, res) => {
     });
   }
 
-  if (status && status !== "true" && status !== "false") {
+  if (
+    status &&
+    status !== "progress" &&
+    status !== "completed" &&
+    status !== "pending"
+  ) {
     return res.status(400).json({
       success: false,
-      message: "You must give task status true or false",
+      message: "You must give task status progress, completed or pending",
     });
   }
 
@@ -43,7 +48,7 @@ const createTask = async (req, res) => {
     title,
     description,
     dueDate: new Date(dueDate),
-    status: status ? status : false,
+    status: status ? status : "pending",
     creator: {
       _id: decoded?.id,
       name: decoded?.name,
