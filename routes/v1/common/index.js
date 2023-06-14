@@ -1,12 +1,12 @@
 import express from "express";
-import { UserController } from "../../../controllers/common/index.js";
+import { CommonController } from "../../../controllers/common/index.js";
 
 const router = express.Router();
 
 // registration
-router.post("/registration", UserController.registration);
+router.post("/registration", CommonController.registration);
 
 // login
-router.get("/login", UserController.login);
+router.get("/login", CommonController.login);
 
-export const UserRouters = router;
+export const CommonRouters = router;

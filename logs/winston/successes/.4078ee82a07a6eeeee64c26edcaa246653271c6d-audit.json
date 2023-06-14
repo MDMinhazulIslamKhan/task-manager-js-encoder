@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\my-project\\task-manager-js-encoder\\logs\\winston\\successes\\.4078ee82a07a6eeeee64c26edcaa246653271c6d-audit.json",
+    "files": [
+        {
+            "date": 1686716338459,
+            "name": "C:\\my-project\\task-manager-js-encoder\\logs\\winston\\successes\\uni-14 Jun, 2023 10-success.log",
+            "hash": "946aa02f7535acc0822d696c06885a4e4012d341292fb451ba0828319d94858e"
+        },
+        {
+            "date": 1686720775398,
+            "name": "C:\\my-project\\task-manager-js-encoder\\logs\\winston\\successes\\uni-14 Jun, 2023 11-success.log",
+            "hash": "64c39c4837050e2744bcb442c7679899ba49b7525a0950c02f7172692e492a28"
+        },
+        {
+            "date": 1686722484049,
+            "name": "C:\\my-project\\task-manager-js-encoder\\logs\\winston\\successes\\uni-14 Jun, 2023 12-success.log",
+            "hash": "767b73704ff7e088363e137c2180d018050bd2d939d9987fcb421a1c6cff1990"
+        },
+        {
+            "date": 1686726066765,
+            "name": "C:\\my-project\\task-manager-js-encoder\\logs\\winston\\successes\\uni-14 Jun, 2023 13-success.log",
+            "hash": "f5949e2d755df12752fb3dbc79acfe1720cc3549d7b7863f5079e3d25dcaf13e"
+        }
+    ],
+    "hashType": "sha256"
+}

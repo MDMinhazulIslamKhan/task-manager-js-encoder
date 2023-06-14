@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import app from "./index.js";
 import config from "./config/index.js";
-import { logger } from "./shared/logger.js";
+import { errorLogger, logger } from "./shared/logger.js";
 
 process.on("uncaughtException", (error) => {
-  console.log(error);
+  errorLogger.error(error);
   process.exit(1);
 });
 

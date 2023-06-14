@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
 
-import { UserRouters } from "./routes/v1/common/index.js";
 import globalErrorHandler from "./middleware/common/globalErrorHandler.js";
+import { CommonRouters } from "./routes/v1/common/index.js";
+import { PublicRouters } from "./routes/v1/public/index.js";
+import { isUser } from "./middleware/public/index.js";
 
 const app = express();
 app.use(cors());
@@ -17,7 +19,10 @@ app.get("/", (req, res) => {
 });
 
 // application common routes
-app.use("/v1/common", UserRouters);
+app.use("/api/v1/common", CommonRouters);
+
+// application public routes
+app.use("/api/v1/public", isUser, PublicRouters);
 
 //No route
 app.all("*", (req, res) => {
