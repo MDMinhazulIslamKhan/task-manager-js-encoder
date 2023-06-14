@@ -2,7 +2,7 @@
   "name": "task_manager_project_js-encoder",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js",
